@@ -1,21 +1,37 @@
 import { Hono } from 'hono'
-import { HTTPException } from 'hono/http-exception'
 import { result } from '../common/result.js'
 import { sign } from 'hono/jwt'
+import * as schema from '../db/schema.js'
+import { db } from '../db/index.js'
+import { and, eq } from 'drizzle-orm'
+import { CustomException } from '../common/customException.js'
 
 const userRoute = new Hono()
 
-userRoute.get('/login', async (c) => {
-    const token = await sign({ id: 1, exp: Math.floor(Date.now() / 1000) + 10 }, "123")
-    return result(c, { token })
+userRoute.post('/login', async (c) => {
+    const { account, password } = await c.req.json()
 
+    const user = await db.query.user.findFirst({
+        where: and(eq(schema.user.account, account), eq(schema.user.password, password))
+    })
+
+    if (!user) {
+        throw new CustomException(400, '账号或密码错误')
+    }
+
+    const token = await sign({ id: user.id, exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 }, process.env.JWT_SECRET)
+
+    return result(c, { token, user })
 })
 
-userRoute.get('/test', async (c) => {
-    const data = c.get('jwtPayload')
-    console.log(data);
+userRoute.get('/getSelfInfo', async (c) => {
+    const { id } = c.get('jwtPayload')
 
-    return result(c, data)
+    const user = await db.query.user.findFirst({
+        where: eq(schema.user.id, id)
+    })
+
+    return result(c, { ...user, account: undefined, password: undefined })
 })
 
 export default userRoute

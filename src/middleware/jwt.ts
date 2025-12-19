@@ -8,5 +8,5 @@ export function jwtMiddleware(c: Context, next: Next) {
         return next()
     }
 
-    return jwt({ secret: '123' })(c, next)
+    return jwt({ secret: process.env.JWT_SECRET })(c, next)
 }

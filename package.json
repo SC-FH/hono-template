@@ -2,9 +2,9 @@
     "name": "hono-template",
     "type": "module",
     "scripts": {
-        "dev": "tsx watch src/index.ts",
+        "dev": "cross-env NODE_ENV=development tsx watch src/index.ts",
         "build": "tsc",
-        "start": "node dist/index.js",
+        "start": "cross-env NODE_ENV=production node dist/index.js",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:push": "drizzle-kit push",
@@ -15,12 +15,14 @@
     },
     "dependencies": {
         "@hono/node-server": "^1.19.6",
+        "dotenv": "^17.2.3",
         "drizzle-orm": "^0.45.1",
         "hono": "^4.11.1",
         "postgres": "^3.4.7"
     },
     "devDependencies": {
         "@types/node": "^20.11.17",
+        "cross-env": "^10.1.0",
         "drizzle-kit": "^0.31.8",
         "tsx": "^4.7.1",
         "typescript": "^5.8.3"
