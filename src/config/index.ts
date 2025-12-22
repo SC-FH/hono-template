@@ -32,6 +32,13 @@ const config: { dev: Partial<AppConfig>, prod: Partial<AppConfig> } & Partial<Ap
         },
     },
     prod: {
+        db: {
+            host: 'localhost',
+            port: 5432,
+            username: 'postgres',
+            password: '123456',
+            database: 'test'
+        },
     },
     jwt: {
         secret: 'secret',
