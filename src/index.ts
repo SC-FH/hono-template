@@ -1,6 +1,7 @@
 import './loadEnv.js'   //确保环境变量加载
-import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import { serve } from '@hono/node-server'
+import { serveStatic } from '@hono/node-server/serve-static'
 
 import { initRoutes } from './routes/index.js'
 import { initExceptionHandler } from './exceptionHandler/index.js'
@@ -13,6 +14,8 @@ import { appConfig } from './config/index.js'
 export const app = new Hono<{
     Variables: JwtVariables
 }>()
+
+app.use('/static/*', serveStatic({ root: './public' })) //静态资源托管
 
 app.notFound((c) => {
     return c.text('Not Found', 404)
