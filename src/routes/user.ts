@@ -7,7 +7,6 @@ import { and, eq } from 'drizzle-orm'
 import { CustomException } from '../common/customException.js'
 import { redis } from '../common/redis.js'
 import { appConfig } from '../config/index.js'
-import { nanoid } from 'nanoid'
 
 const userRoute = new Hono()
 

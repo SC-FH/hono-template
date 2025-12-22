@@ -26,5 +26,5 @@ serve({
     fetch: app.fetch,
     port: appConfig.server.port
 }, (info) => {
-    logger.info(`Server is running on http://localhost:${info.port}`)
+    logger.info(`服务已启动 http://localhost:${info.port}`)
 })
