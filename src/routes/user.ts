@@ -5,6 +5,9 @@ import * as schema from '../db/schema.js'
 import { db } from '../db/index.js'
 import { and, eq } from 'drizzle-orm'
 import { CustomException } from '../common/customException.js'
+import { redis } from '../common/redis.js'
+import { appConfig } from '../config/index.js'
+import { nanoid } from 'nanoid'
 
 const userRoute = new Hono()
 
@@ -19,7 +22,9 @@ userRoute.post('/login', async (c) => {
         throw new CustomException(400, '账号或密码错误')
     }
 
-    const token = await sign({ id: user.id, exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 }, process.env.JWT_SECRET)
+    const token = await sign({ id: user.id, exp: Math.floor(Date.now() / 1000) + appConfig.jwt.expired }, appConfig.jwt.secret)
+
+    redis.set(`token:${user.id}`, token, { expiration: { type: 'EX', value: appConfig.jwt.expired } })
 
     return result(c, { token, user })
 })

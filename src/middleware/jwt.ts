@@ -1,5 +1,6 @@
 import type { Context, Next } from 'hono';
 import { jwt } from 'hono/jwt'
+import { appConfig } from '../config/index.js';
 
 export function jwtMiddleware(c: Context, next: Next) {
     const whiteList = ['/user/login']
@@ -8,5 +9,5 @@ export function jwtMiddleware(c: Context, next: Next) {
         return next()
     }
 
-    return jwt({ secret: process.env.JWT_SECRET })(c, next)
+    return jwt({ secret: appConfig.jwt.secret })(c, next)
 }

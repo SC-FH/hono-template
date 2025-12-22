@@ -8,22 +8,23 @@ import { initMiddleware } from './middleware/index.js'
 import type { JwtVariables } from 'hono/jwt'
 
 import { logger } from './common/logger.js'
+import { appConfig } from './config/index.js'
 
 export const app = new Hono<{
     Variables: JwtVariables
 }>()
 
-initExceptionHandler()   //初始化全局异常处理器
-initMiddleware()     //初始化中间件
-initRoutes()     //初始化路由
-
 app.notFound((c) => {
     return c.text('Not Found', 404)
 })
 
+initExceptionHandler()   //初始化全局异常处理器
+initMiddleware()     //初始化中间件
+initRoutes()     //初始化路由
+
 serve({
     fetch: app.fetch,
-    port: 3000
+    port: appConfig.server.port
 }, (info) => {
     logger.info(`Server is running on http://localhost:${info.port}`)
 })
