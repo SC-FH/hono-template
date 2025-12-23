@@ -1,13 +1,12 @@
-import type { Context, Next } from 'hono';
 import { redis } from '../common/redis.js';
 import { CustomException } from '../common/customException.js';
+import { createMiddleware } from 'hono/factory';
 
-export async function singleMiddleware(c: Context, next: Next) {
-    const payload = c.get('jwtPayload')
-
+export const singleMiddleware = createMiddleware(async (c, next) => {
+    const userId = c.get('userId')
     //如果不存在则为白名单接口
-    if (payload) {
-        const key = `token:${payload.id}`
+    if (userId) {
+        const key = `token:${userId}`
 
         const token = c.req.header('authorization')?.split(" ")[1]
 
@@ -19,4 +18,4 @@ export async function singleMiddleware(c: Context, next: Next) {
     }
 
     return next()
-}
+})

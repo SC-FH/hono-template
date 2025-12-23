@@ -29,10 +29,10 @@ userRoute.post('/login', async (c) => {
 })
 
 userRoute.get('/getSelfInfo', async (c) => {
-    const { id } = c.get('jwtPayload')
+    const userId = c.get('userId')
 
     const user = await db.query.user.findFirst({
-        where: eq(schema.user.id, id)
+        where: eq(schema.user.id, userId)
     })
 
     return result(c, { ...user, account: undefined, password: undefined })

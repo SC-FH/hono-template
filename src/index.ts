@@ -12,7 +12,9 @@ import { logger } from './common/logger.js'
 import { appConfig } from './config/index.js'
 
 export const app = new Hono<{
-    Variables: JwtVariables
+    Variables: {
+        userId: number
+    } & JwtVariables
 }>()
 
 app.use('/static/*', serveStatic({ root: './public' })) //静态资源托管

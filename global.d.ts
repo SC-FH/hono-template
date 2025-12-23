@@ -1,3 +1,4 @@
+import 'hono'
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
@@ -6,4 +7,11 @@ declare global {
     }
 }
 
-export {}
+declare module 'hono' {
+    interface ContextVariableMap {
+        // 定义Hono Context中的自定义存储的变量类型
+        userId: number
+    }
+}
+
+export { }
