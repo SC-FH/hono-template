@@ -4,7 +4,7 @@ import type { ZodType } from 'zod'
 
 // 封装一个通用的校验器
 
-export function validator(target: keyof ValidationTargets, schema: ZodType) {
+export function validator<Target extends keyof ValidationTargets, T extends ZodType>(target: Target, schema: T) {
     return zValidator(target, schema, (result, c) => {
         if (!result.success) {
             return c.json({

@@ -10,6 +10,7 @@ import { appConfig } from '../config/index.js'
 import { ws } from '../ws/index.js'
 import * as z from 'zod'
 import { validator } from '../common/validator.js'
+import { zValidator } from '@hono/zod-validator'
 
 const userRoute = new Hono()
 
@@ -20,7 +21,7 @@ userRoute.post(
         password: z.string()
     })),
     async (c) => {
-        const { account, password } = await c.req.json()
+        const { account, password } = c.req.valid('json')
 
         const user = await db.query.user.findFirst({
             where: and(eq(schema.user.account, account), eq(schema.user.password, password))

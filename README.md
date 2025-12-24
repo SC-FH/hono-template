@@ -9,3 +9,4 @@
 - drizzle ORM
 - postgre 数据库
 - Websocket
+- zod 数据校验
