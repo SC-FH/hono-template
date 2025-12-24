@@ -33,7 +33,7 @@ export function ws(options: WSEvents<WebSocket>, heartbeat = true, heartbeatClos
 
         return {
             onOpen(evt, ws) {
-                logger.info(`ws链接 用户id:${c.get('userId')}`)
+                logger.info(`${c.req.path} 用户id: ${c.get('userId')} 已连接WS`)
 
                 if (heartbeat) {
                     setHeartbeatCloseTimer(ws)
@@ -42,7 +42,7 @@ export function ws(options: WSEvents<WebSocket>, heartbeat = true, heartbeatClos
                 options.onOpen?.(evt, ws)
             },
             onClose(evt, ws) {
-                logger.info(`ws断开 用户id:${c.get('userId')}`)
+                logger.info(`${c.req.path} 用户id: ${c.get('userId')} 已断开WS`)
                 options.onClose?.(evt, ws)
             },
             onMessage(evt, ws) {
@@ -54,7 +54,7 @@ export function ws(options: WSEvents<WebSocket>, heartbeat = true, heartbeatClos
                         return
                     }
                 }
-                logger.info(`ws消息 用户id:${c.get('userId')} 内容:${evt.data}`)
+                logger.info(`${c.req.path} 用户id: ${c.get('userId')} 发送消息: ${evt.data}`)
                 options.onMessage?.(evt, ws)
             }
         }

@@ -13,6 +13,13 @@ export function initMiddleware(app: Hono) {
     app.use(cors())
 
     //以下顺序不能改变
+    app.use((c, next) => {
+        //校验请求是否为ws
+        const upgradeHeader = c.req.header('Upgrade')
+        const isWS = upgradeHeader?.toLowerCase() === 'websocket'
+        c.set('isWS', isWS)
+        return next()
+    })
     app.use(jwtMiddleware)  //jwt验证
     app.use(singleMiddleware)   //单点登录
 }
