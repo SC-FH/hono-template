@@ -10,7 +10,6 @@ import { appConfig } from '../config/index.js'
 import { ws } from '../ws/index.js'
 import * as z from 'zod'
 import { validator } from '../common/validator.js'
-import { zValidator } from '@hono/zod-validator'
 
 const userRoute = new Hono()
 
