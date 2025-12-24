@@ -8,6 +8,8 @@ import type { Hono } from 'hono'
 export function initExceptionHandler(app: Hono) {
     app.onError((err, ctx) => {
 
+        console.log(err);
+        
         if (err instanceof HTTPException) {
             return ctx.json({ code: err.status, message: err.message }, err.status)
         }

@@ -14,6 +14,9 @@ importers:
       '@hono/node-ws':
         specifier: ^1.2.0
         version: 1.2.0(@hono/node-server@1.19.7(hono@4.11.1))(hono@4.11.1)
+      '@hono/zod-validator':
+        specifier: ^0.7.6
+        version: 0.7.6(hono@4.11.1)(zod@4.2.1)
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
@@ -41,6 +44,9 @@ importers:
       redis:
         specifier: ^5.10.0
         version: 5.10.0
+      zod:
+        specifier: ^4.2.1
+        version: 4.2.1
     devDependencies:
       '@types/node':
         specifier: ^20.11.17
@@ -531,6 +537,12 @@ packages:
       '@hono/node-server': ^1.11.1
       hono: ^4.6.0
 
+  '@hono/zod-validator@0.7.6':
+    resolution: {integrity: sha512-Io1B6d011Gj1KknV4rXYz4le5+5EubcWEU/speUjuw9XMMIaP3n78yXLhjd2A3PXaXaUwEAluOiAyLqhBEJgsw==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.25.0 || ^4.0.0
+
   '@pinojs/redact@0.4.0':
     resolution: {integrity: sha512-k2ENnmBugE/rzQfEcdWHcCY+/FM3VLzH9cYEsbdsoqrvzAKRhUZeRNhAZvB8OitQJ1TBed3yqWtdjzS6wJKBwg==}
 
@@ -889,6 +901,9 @@ packages:
       utf-8-validate:
         optional: true
 
+  zod@4.2.1:
+    resolution: {integrity: sha512-0wZ1IRqGGhMP76gLqz8EyfBXKk0J2qo2+H3fi4mcUP/KtTocoX08nmIAHl1Z2kJIZbZee8KOpBCSNPRgauucjw==}
+
 snapshots:
 
   '@drizzle-team/brocli@0.10.2': {}
@@ -1139,6 +1154,11 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+
+  '@hono/zod-validator@0.7.6(hono@4.11.1)(zod@4.2.1)':
+    dependencies:
+      hono: 4.11.1
+      zod: 4.2.1
 
   '@pinojs/redact@0.4.0': {}
 
@@ -1450,3 +1470,5 @@ snapshots:
   wrappy@1.0.2: {}
 
   ws@8.18.3: {}
+
+  zod@4.2.1: {}
