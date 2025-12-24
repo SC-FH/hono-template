@@ -8,12 +8,20 @@ export const singleMiddleware = createMiddleware(async (c, next) => {
     if (userId) {
         const key = `token:${userId}`
 
-        const token = c.req.header('authorization')?.split(" ")[1]
+        const isWS = c.get('isWS')  //判断是否为websocket请求
+
+        let token = ""
+
+        if (isWS) {
+            token = c.req.query('token') || ""
+        } else {
+            token = c.req.header('authorization')?.split(" ")[1] || ""
+        }
 
         const resToken = await redis.get(key)
 
         if (resToken && resToken !== token) {
-            throw new CustomException(403, '用户已在别处登录')
+            throw new CustomException(401, '用户已在别处登录')
         }
     }
 
