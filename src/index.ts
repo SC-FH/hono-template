@@ -3,33 +3,40 @@ import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
 
-import { initRoutes } from './routes/index.js'
-import { initExceptionHandler } from './exceptionHandler/index.js'
-import { initMiddleware } from './middleware/index.js'
-import type { JwtVariables } from 'hono/jwt'
-
 import { logger } from './common/logger.js'
 import { appConfig } from './config/index.js'
 
-export const app = new Hono<{
-    Variables: {
-        userId: number
-    } & JwtVariables
-}>()
 
-app.use('/static/*', serveStatic({ root: './public' })) //静态资源托管
+async function bootstrap() {
+    const app = new Hono()
 
-app.notFound((c) => {
-    return c.text('Not Found', 404)
-})
+    app.use('/static/*', serveStatic({ root: './public' })) //静态资源托管
 
-initExceptionHandler()   //初始化全局异常处理器
-initMiddleware()     //初始化中间件
-initRoutes()     //初始化路由
+    app.notFound((c) => {
+        return c.text('Not Found', 404)
+    })
 
-serve({
-    fetch: app.fetch,
-    port: appConfig.server.port
-}, (info) => {
-    logger.info(`服务已启动 http://localhost:${info.port}`)
-})
+    //使用异步加载模块，确保模块加载顺序
+    const { initWS } = await import('./ws/index.js')
+    const { injectWebSocket } = initWS(app)
+
+    const { initExceptionHandler } = await import('./exceptionHandler/index.js')
+    initExceptionHandler(app)   //初始化全局异常处理器
+
+    const { initMiddleware } = await import('./middleware/index.js')
+    initMiddleware(app)     //初始化中间件
+
+    const { initRoutes } = await import('./routes/index.js')
+    initRoutes(app)     //初始化路由
+
+    const server = serve({
+        fetch: app.fetch,
+        port: appConfig.server.port
+    }, (info) => {
+        logger.info(`服务已启动 http://localhost:${info.port}`)
+    })
+
+    injectWebSocket(server)
+}
+
+bootstrap()

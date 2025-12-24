@@ -7,6 +7,7 @@ import { and, eq } from 'drizzle-orm'
 import { CustomException } from '../common/customException.js'
 import { redis } from '../common/redis.js'
 import { appConfig } from '../config/index.js'
+import { ws } from '../ws/index.js'
 
 const userRoute = new Hono()
 
@@ -37,5 +38,13 @@ userRoute.get('/getSelfInfo', async (c) => {
 
     return result(c, { ...user, account: undefined, password: undefined })
 })
+
+userRoute.get('/ws', ws({
+    onMessage(evt, ws) {
+        if (typeof evt.data === 'string') {
+            ws.send(evt.data)
+        }
+    },
+}))
 
 export default userRoute
