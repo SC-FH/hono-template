@@ -8,7 +8,7 @@ import { CustomException } from '../common/customException.js'
 import { redis } from '../common/redis.js'
 import { appConfig } from '../config/index.js'
 import { ws } from '../ws/index.js'
-import * as z from 'zod'
+import { z } from 'zod'
 import { validator } from '../common/validator.js'
 
 const userRoute = new Hono()
