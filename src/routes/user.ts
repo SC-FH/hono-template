@@ -10,6 +10,7 @@ import { appConfig } from '../config/index.js'
 import { ws } from '../ws/index.js'
 import { z } from 'zod'
 import { validator } from '../common/validator.js'
+import { roleMiddleware } from '../middleware/role.js'
 
 const userRoute = new Hono()
 
@@ -38,15 +39,19 @@ userRoute.post(
     }
 )
 
-userRoute.get('/getSelfInfo', async (c) => {
-    const userId = c.get('userId')
+userRoute.get(
+    '/getSelfInfo',
+    roleMiddleware(['admin']),
+    async (c) => {
+        const userId = c.get('userId')
 
-    const user = await db.query.user.findFirst({
-        where: eq(schema.user.id, userId)
-    })
+        const user = await db.query.user.findFirst({
+            where: eq(schema.user.id, userId)
+        })
 
-    return result(c, { ...user, account: undefined, password: undefined })
-})
+        return result(c, { ...user, account: undefined, password: undefined })
+    }
+)
 
 userRoute.get('/ws', ws({
     onMessage(evt, ws) {

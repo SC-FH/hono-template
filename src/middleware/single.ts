@@ -2,6 +2,9 @@ import { redis } from '../common/redis.js';
 import { CustomException } from '../common/customException.js';
 import { createMiddleware } from 'hono/factory';
 
+/**
+ * 单用户登录中间件
+ */
 export const singleMiddleware = createMiddleware(async (c, next) => {
     const userId = c.get('userId')
     //如果不存在则为白名单接口
