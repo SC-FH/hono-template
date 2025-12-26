@@ -6,6 +6,8 @@
 
 - CORS 跨域
 - JWT 认证
+- 单点登录
+- 角色验证
 - drizzle ORM
 - postgre 数据库
 - Websocket
