@@ -1,75 +1,87 @@
-# Hono 模板项目说明
+# Hono Template Project
 
-> 本项目是基于 Hono 框架搭建的 Node.js 网络服务器模板，集成了常用功能模块，便于后续快速开发和调试。
+**Language:**  
+[English](/README.md) | [中文](/docs/languages/zh-CN.md)
 
-## 项目集成特性
+---
 
-- **CORS**：支持跨域请求
-- **JWT**：提供认证机制
-- **单点登录**：支持统一身份验证
-- **角色验证**：基于角色的权限控制
-- **Drizzle ORM**：数据库操作工具
-- **PostgreSQL**：支持 PostgreSQL 数据库
-- **WebSocket**：提供实时通信能力
-- **Zod**：数据校验工具，确保数据准确性
+## Project Overview
 
-## 开发环境依赖
+> This project is a Node.js web server template built with the **Hono** framework. It integrates commonly used modules to enable rapid development and easy debugging.
 
-- Node.js (建议使用 LTS 版本)
-- pnpm (包管理工具)
-- PostgreSQL (数据库环境)
-- Redis (可选，用于缓存或会话管理)
+## Integrated Features
 
-## 安装与运行
+- **CORS**: Cross-Origin Resource Sharing support
+- **JWT**: Authentication mechanism
+- **Single Sign-On (SSO)**: Unified identity authentication
+- **Role-Based Authorization**: Permission control based on user roles
+- **Drizzle ORM**: Database operation toolkit
+- **PostgreSQL**: PostgreSQL database support
+- **WebSocket**: Real-time communication support
+- **Zod**: Data validation to ensure data accuracy
 
-1. 安装依赖：
-   ```bash
-   pnpm install
-   ```
+## Development Environment Requirements
 
-2. 配置环境变量：
-   - 根据开发/生产环境复制 `.env.development` 或 `.env.production` 为 `.env` 并修改配置
+- Node.js (LTS version recommended)
+- pnpm (package manager)
+- PostgreSQL (database)
+- Redis (cache or session management)
 
-3. 启动项目：
-   ```bash
-   pnpm dev
-   ```
+## Installation & Running
 
-## 项目结构概览
+1. Install dependencies:
+
+```bash
+pnpm install
+```
+
+2. Configure environment variables:
+
+- Copy `.env.development` or `.env.production` to `.env` based on your environment and update the configuration.
+
+3. Start the project:
+
+```bash
+pnpm dev
+```
+
+## Project Structure Overview
 
 ```
 src/
-├── common/                  # 通用工具类或异常处理
-├── config/                  # 配置管理
-├── db/                      # 数据库相关配置与模型
-├── exceptionHandler/        # 异常处理中间件
-├── middleware/              # 自定义中间件（JWT、角色验证等）
-├── routes/                  # 路由模块（如用户路由）
-├── ws/                      # WebSocket 模块
-├── index.ts                 # 项目启动入口
-├── loadEnv.ts               # 环境变量加载
+├── common/                  # Common utilities or error handling
+├── config/                  # Configuration management
+├── db/                      # Database configuration and models
+├── exceptionHandler/        # Exception handling middleware
+├── middleware/              # Custom middleware (JWT, role validation, etc.)
+├── routes/                  # Route modules (e.g. user routes)
+├── ws/                      # WebSocket module
+├── index.ts                 # Application entry point
+├── loadEnv.ts               # Environment variable loader
 ```
 
-## 主要技术栈
+## Main Technology Stack
 
-- [Hono](https://honojs.dev)：轻量高性能的 Web 框架
-- [Drizzle ORM](https://orm.drizzlelabs.com)：TypeScript ORM 工具
-- [Zod](https://zod.dev)：运行时数据校验
-- [JWT](https://jwt.io)：用于用户认证与令牌生成
-- PostgreSQL：数据库支持
-- Redis（可选）：缓存或会话存储
+- [Hono](https://honojs.dev): Lightweight and high-performance web framework
+- [Drizzle ORM](https://orm.drizzle.team/docs): TypeScript ORM
+- [Zod](https://zod.dev): Runtime data validation
+- [JWT](https://jwt.io): User authentication and token generation
+- PostgreSQL: Database
+- Redis: Cache or session storage
 
-## 使用说明
+## Usage Notes
 
-- 所有路由定义在 `src/routes/` 目录下
-- 中间件逻辑在 `src/middleware/` 中实现
-- 数据库操作通过 Drizzle ORM 定义在 `src/db/`
-- 服务启动入口为 `src/index.ts`
+- All routes are defined in the `src/routes/` directory
+- Middleware logic is implemented in `src/middleware/`
+- Database operations are defined in `src/db/` using Drizzle ORM
+- The application entry point is `src/index.ts`
 
-## 贡献指南
+## Contribution Guide
 
-欢迎提交 Issue 和 Pull Request。请确保代码风格与项目保持一致，并提供必要的文档更新。
+Issues and Pull Requests are welcome.  
+Please ensure your code style is consistent with the project and include necessary documentation updates.
 
-## 许可证
+## License
 
-本项目基于 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
+This project is licensed under the MIT License.  
+See the [LICENSE](LICENSE) file for details.
