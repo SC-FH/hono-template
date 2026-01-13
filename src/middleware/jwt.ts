@@ -17,7 +17,7 @@ export const jwtMiddleware = createMiddleware(async (c, next) => {
         const token = c.req.query('token') || ''
 
         try {
-            const jwtPayload: any = await verify(token, appConfig.jwt.secret)
+            const jwtPayload: any = await verify(token, appConfig.jwt.secret, 'HS256')
             c.set('jwtPayload', jwtPayload)
             const { id } = jwtPayload
             c.set('userId', id)
@@ -28,7 +28,7 @@ export const jwtMiddleware = createMiddleware(async (c, next) => {
         return next()
     }
 
-    return jwt({ secret: appConfig.jwt.secret })(c, () => {
+    return jwt({ secret: appConfig.jwt.secret, alg: 'HS256' })(c, () => {
         const { id } = c.get('jwtPayload')
         c.set('userId', id)
         return next()
