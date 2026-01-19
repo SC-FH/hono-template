@@ -28,6 +28,6 @@ export const roleMiddleware = (roles: string[], options: RoleMiddlewareOptions =
             return next();
         }
 
-        throw new CustomException(403, '无权限访问');
+        throw new CustomException('无权限访问', 403);
     })
 }

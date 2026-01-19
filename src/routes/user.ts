@@ -28,7 +28,7 @@ userRoute.post(
         })
 
         if (!user) {
-            throw new CustomException(400, '账号或密码错误')
+            throw new CustomException('账号或密码错误')
         }
 
         const token = await sign({ id: user.id, exp: Math.floor(Date.now() / 1000) + appConfig.jwt.expired }, appConfig.jwt.secret)

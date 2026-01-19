@@ -22,7 +22,7 @@ export const jwtMiddleware = createMiddleware(async (c, next) => {
             const { id } = jwtPayload
             c.set('userId', id)
         } catch (err) {
-            throw new CustomException(401, 'Unauthorized')
+            throw new CustomException('Unauthorized', 401)
         }
 
         return next()

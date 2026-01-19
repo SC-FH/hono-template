@@ -24,7 +24,7 @@ export const singleMiddleware = createMiddleware(async (c, next) => {
         const resToken = await redis.get(key)
 
         if (resToken && resToken !== token) {
-            throw new CustomException(401, '用户已在别处登录')
+            throw new CustomException('用户已在别处登录', 401)
         }
     }
 
