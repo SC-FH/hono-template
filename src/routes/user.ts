@@ -41,7 +41,6 @@ userRoute.post(
 
 userRoute.get(
     '/getSelfInfo',
-    roleMiddleware(['admin']),
     async (c) => {
         const userId = c.get('userId')
 
@@ -50,6 +49,16 @@ userRoute.get(
         })
 
         return result(c, { ...user, account: undefined, password: undefined })
+    }
+)
+
+userRoute.get(
+    '/getUserList',
+    roleMiddleware(['admin']),
+    async (c) => {
+        const userList = await db.query.user.findMany()
+
+        return result(c, userList)
     }
 )
 

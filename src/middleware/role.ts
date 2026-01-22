@@ -1,5 +1,11 @@
 import { createMiddleware } from 'hono/factory'
 import { CustomException } from '../common/customException.js'
+import { redis } from '../common/redis.js'
+import { db } from '../db/index.js'
+import { eq } from 'drizzle-orm'
+import * as schema from '../db/schema.js'
+
+export type Role = 'admin' | 'user'
 
 type RoleMiddlewareOptions = {
     /**
@@ -15,10 +21,31 @@ type RoleMiddlewareOptions = {
  * @returns 
  */
 export const roleMiddleware = (roles: Role[], options: RoleMiddlewareOptions = { isExclude: false }) => {
-    return createMiddleware((c, next) => {
+    return createMiddleware(async (c, next) => {
 
-        // const role = c.get('userRole')  //设置context用户角色（JWT层设置），从context中获取用户角色
-        const role = 'admin';
+        const userId = c.get('userId')
+
+        let role: Role
+
+        const redisRole = await redis.get(`role:${userId}`)
+
+        if (redisRole) {
+            role = redisRole as Role
+        } else {
+            const user = await db.query.user.findFirst({
+                where: eq(schema.user.id, userId),
+            })
+
+            const userRole = user?.role
+
+            if (!userRole) {
+                throw new CustomException('未找到用户角色', 400)
+            }
+
+            role = userRole
+
+            await redis.set(`role:${userId}`, userRole, { EX: 60 * 60 * 24 })
+        }
 
         const hasAccess = options.isExclude
             ? !roles.includes(role)
@@ -31,5 +58,3 @@ export const roleMiddleware = (roles: Role[], options: RoleMiddlewareOptions = {
         throw new CustomException('无权限访问', 403);
     })
 }
-
-type Role = "admin" | "user"
