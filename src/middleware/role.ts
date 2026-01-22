@@ -14,7 +14,7 @@ type RoleMiddlewareOptions = {
  * @param options 
  * @returns 
  */
-export const roleMiddleware = (roles: string[], options: RoleMiddlewareOptions = { isExclude: false }) => {
+export const roleMiddleware = (roles: Role[], options: RoleMiddlewareOptions = { isExclude: false }) => {
     return createMiddleware((c, next) => {
 
         // const role = c.get('userRole')  //设置context用户角色（JWT层设置），从context中获取用户角色
@@ -31,3 +31,5 @@ export const roleMiddleware = (roles: string[], options: RoleMiddlewareOptions =
         throw new CustomException('无权限访问', 403);
     })
 }
+
+type Role = "admin" | "user"

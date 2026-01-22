@@ -10,7 +10,11 @@ import { appConfig } from './config/index.js'
 async function bootstrap() {
     const app = new Hono()
 
-    app.use('/static/*', serveStatic({ root: './public' })) //静态资源托管
+    app.use('/static/*', serveStatic({
+        root: './public', rewriteRequestPath(path, c) {
+            return path.replace(/^\/static/, '')
+        },
+    })) //静态资源托管
 
     app.notFound((c) => {
         return c.text('Not Found', 404)
